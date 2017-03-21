@@ -1,0 +1,171 @@
+<!-- Copyright (c) 2016, preview-code
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of preview-code nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-input/paper-textarea.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icons/editor-icons.html">
+<link rel="import" href="marked-github-element.html">
+
+<!--
+`markdown-input`
+
+Element to parse markdown input from an input field and
+after toggling the preview showing the rendered markdown in real-time.
+
+@demo demo/index.html
+-->
+
+<dom-module id="markdown-input">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        padding: 1em;
+        padding-left: 0.5em;
+        border: solid 1px transparent;
+      }
+      :host([disabled]) {
+        padding: 0;
+      }
+      :host(.noPreview) {
+        border: solid 1px var(--secondary-background-color, lightgray);
+        background-color: var(--tertiary-background-color, white);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .edit-area {
+        flex: 1;
+        line-height: 1.4em;
+        padding-left: 0.5em;
+        min-width: 0;
+      }
+      paper-textarea {
+        --paper-input-container: {
+          padding: 0 0 1em 0;
+        };
+        --paper-input-container-label: {
+          color: var(--secondary-text-color, grey);
+        };
+        --paper-input-container-color: var(--secondary-background-color,lightgrey);
+        --paper-input-container-focus-color: var(--anchor-color, lightblue);
+      }
+
+      paper-icon-button {
+        margin-top: 1em;
+      }
+      paper-icon-button:hover {
+        color: var(--anchor-color, lightblue);
+      }
+      marked-github-element {
+        margin-top: 16px;
+        min-height: 50px;
+      }
+    </style>
+    <div class="edit-area">
+      <paper-textarea id="textarea" hidden$="[[!_hidePreview]]" label="[[label]]" value="{{markdown}}"></paper-textarea>
+      <marked-github-element hidden$="[[_hidePreview]]" markdown="[[markdown]]" project="[[project]]"></marked-github-element>
+    </div>
+    <paper-icon-button toggles icon="icons:visibility" hidden$="[[hideEdit]]" active="{{previewToggle}}" title="Toggle Markdown preview">[[_toggleText]]</paper-icon-button>
+    <paper-icon-button toggles icon="editor:mode-edit" hidden$="[[!hideEdit]]" active="{{previewToggle}}" title="Toggle Markdown preview">[[_toggleText]]</paper-icon-button>
+  </template>
+  <script>
+    Polymer({
+      is: 'markdown-input',
+      properties: {
+        /**
+         * If the toggle button should be hidden.
+         * @type {Boolean}
+         */
+        disabled: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+        /**
+         * The markdown from the input field to be rendered to markdown HTML.
+         * @type {String}
+         */
+        markdown: {
+          type: String,
+          notify: true
+        },
+        /**
+         * The label for the text input field.
+         * @type {String}
+         */
+        label: String,
+        previewToggle: {
+          type: Boolean,
+          notify: true,
+          observer: '_previewToggleChanged'
+        },
+        _hidePreview: {
+          type: Boolean,
+          computed: '_getHidePreview(previewToggle, disabled)'
+        },
+        _toggleText: {
+          type: String,
+          computed: '_getToggleText(previewToggle)'
+        },
+        hideEdit: {
+          type: Boolean,
+          computed: '_showEdit(disabled, previewToggle)'
+        },
+        Project: Object
+      },
+      _previewToggleChanged: function (newValue) {
+        if (newValue) {
+          return;
+        }
+        //This line crashes ff
+        this.$.textarea.$.input.$.textarea.setSelectionRange(0, 0);
+        this.$.textarea.focus();
+      },
+      _getHidePreview: function (previewToggle, disabled) {
+        var shouldBeHidden = !disabled && !previewToggle;
+        this.toggleClass('noPreview', shouldBeHidden);
+        return shouldBeHidden;
+      },
+      _getToggleText: function (active) {
+        if (active) {
+          return 'Edit';
+        }
+        return 'Preview';
+      },
+      _showEdit: function (disabled, previewToggle) {
+        if (disabled) {
+          return !disabled;
+        }
+        return previewToggle;
+      }
+    });
+  </script>
+</dom-module>
