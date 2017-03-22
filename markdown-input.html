@@ -70,8 +70,8 @@ after toggling the preview showing the rendered markdown in real-time.
       <paper-textarea id="textarea" hidden$="[[!_hidePreview]]" label="[[label]]" value="{{markdown}}"></paper-textarea>
       <marked-github-element hidden$="[[_hidePreview]]" markdown="[[markdown]]" project="[[project]]"></marked-github-element>
     </div>
-    <paper-icon-button toggles icon="icons:visibility" hidden$="[[hideEdit]]" active="{{previewToggle}}" title="Toggle Markdown preview">[[_toggleText]]</paper-icon-button>
-    <paper-icon-button toggles icon="editor:mode-edit" hidden$="[[!hideEdit]]" active="{{previewToggle}}" title="Toggle Markdown preview">[[_toggleText]]</paper-icon-button>
+    <paper-icon-button toggles id="previewIcon" icon="icons:visibility" hidden$="[[_hidePreviewIcon]]" active="{{previewToggle}}" title="Toggle Markdown preview">[[_toggleText]]</paper-icon-button>
+    <paper-icon-button toggles id="editIcon" icon="editor:mode-edit" hidden$="[[_hideEditIcon]]" active="{{previewToggle}}" title="Toggle Markdown preview">[[_toggleText]]</paper-icon-button>
   </template>
   <script>
     Polymer({
@@ -99,11 +99,25 @@ after toggling the preview showing the rendered markdown in real-time.
          * @type {String}
          */
         label: String,
+
+        /**
+         * Determines whether preview mode is enabled or not.
+         * @type {Boolean}
+         */
         previewToggle: {
           type: Boolean,
           notify: true,
           observer: '_previewToggleChanged'
         },
+
+        /**
+         * Set this to an object containing a `name` and `owner` field.
+         * Necessary to correctly generate GitHub flavored markdown that
+         * contains links on user/issue references.
+         * @type {Object}
+         */
+        project: Object,
+
         _hidePreview: {
           type: Boolean,
           computed: '_getHidePreview(previewToggle, disabled)'
@@ -112,36 +126,42 @@ after toggling the preview showing the rendered markdown in real-time.
           type: String,
           computed: '_getToggleText(previewToggle)'
         },
-        hideEdit: {
+        _hideEditIcon: {
           type: Boolean,
-          computed: '_showEdit(disabled, previewToggle)'
+          computed: '_computeHideEditIcon(disabled, previewToggle)'
         },
-        Project: Object
+        _hidePreviewIcon: {
+          type: Boolean,
+          computed: '_computeHidePreviewIcon(disabled, previewToggle)'
+        }
       },
+
       _previewToggleChanged: function (newValue) {
         if (newValue) {
           return;
         }
-        //This line crashes ff
-        this.$.textarea.$.input.$.textarea.setSelectionRange(0, 0);
         this.$.textarea.focus();
       },
+
       _getHidePreview: function (previewToggle, disabled) {
         var shouldBeHidden = !disabled && !previewToggle;
         this.toggleClass('noPreview', shouldBeHidden);
         return shouldBeHidden;
       },
+
       _getToggleText: function (active) {
         if (active) {
           return 'Edit';
         }
         return 'Preview';
       },
-      _showEdit: function (disabled, previewToggle) {
-        if (disabled) {
-          return !disabled;
-        }
-        return previewToggle;
+
+      _computeHideEditIcon: function (disabled, previewToggle) {
+        return !previewToggle || disabled;
+      },
+
+      _computeHidePreviewIcon: function (disabled, previewToggle) {
+        return previewToggle || disabled;
       }
     });
   </script>

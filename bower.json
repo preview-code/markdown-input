@@ -43,12 +43,9 @@
     "web-components",
     "web-component",
     "polymer",
-    "comment",
-    "review",
-    "code"
-  ],
-  "resolutions": {
-    "iron-test-helpers": "^1.0.0",
-    "marked-element": "expose-callback"
-  }
+    "markdown",
+    "preview",
+    "input",
+    "textarea"
+  ]
 }

@@ -11,9 +11,17 @@ This code may only be used under the BSD style license found in LICENSE.txt
       :host {
         display: block;
       }
+      markdown-input {
+        margin-bottom: 2em;
+      }
     </style>
 
     <markdown-input project="[[project]]"></markdown-input>
+
+    <markdown-input 
+      project="[[project]]" 
+      disabled
+      markdown="Hello **world**!"></markdown-input>
 
   </template>
   <script>
@@ -24,8 +32,8 @@ This code may only be used under the BSD style license found in LICENSE.txt
         project: {
           type: Object,
           value: {
-            name: 'name',
-            owner: 'owner'
+            name: 'markdown-input',
+            owner: 'preview-code'
           }
         }
       }
