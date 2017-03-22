@@ -108,14 +108,6 @@ This code may only be used under the BSD style license found in LICENSE.txt
         var markedGithubElem = Polymer.dom(mdInput.root).querySelector('marked-github-element');
         assert.equal(markedGithubElem.markdown, markdown);
       });
-
-      test('Going from preview to edit mode focusses the textarea', function () {
-        mdInput.previewToggle = true;
-        mdInput.previewToggle = false;
-
-        var paperText = Polymer.dom(mdInput.root).querySelector('paper-textarea');
-        assert.isTrue(paperText.focused);
-      });
     });
 
     suite('Disabled <markdown-input>', function() {
