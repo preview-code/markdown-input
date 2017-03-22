@@ -1,32 +1,9 @@
-<!-- Copyright (c) 2016, preview-code
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of preview-code nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<!DOCTYPE html>
+<!--
+@license
+Copyright (c) 2017 Preview-Code. All rights reserved.
+This code may only be used under the BSD style license found in LICENSE.txt
 -->
-<!doctype html>
 <html>
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
@@ -89,6 +66,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         assert.isTrue(paperText.hasAttribute('hidden'));
       });
 
+      test('Shows the edit icon when preview is true', function() {
+        mdInput.previewToggle = true;
+        var editIcon = Polymer.dom(mdInput.root).querySelector('#editIcon');
+        assert.isFalse(editIcon.hasAttribute('hidden'));
+      });
+
+      test('Hides the preview icon when preview is true', function() {
+        mdInput.previewToggle = true;
+        var previewIcon = Polymer.dom(mdInput.root).querySelector('#previewIcon');
+        assert.isTrue(previewIcon.hasAttribute('hidden'));
+      });
+
+      test('Hides the edit icon when preview is false', function() {
+        var editIcon = Polymer.dom(mdInput.root).querySelector('#editIcon');
+        assert.isTrue(editIcon.hasAttribute('hidden'));
+      });
+
+      test('Shows the preview icon when preview is false', function() {
+        var previewIcon = Polymer.dom(mdInput.root).querySelector('#previewIcon');
+        assert.isFalse(previewIcon.hasAttribute('hidden'));
+      });
+
       test('Binds label to paper-textarea', function() {
         var labelText = 'Hello World';
         mdInput.setAttribute('label', labelText);
@@ -129,7 +128,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       });
 
       test('Does not hide <marked-github-element> when preview is true', function() {
-        disabledInput._previewToggle = true;
+        disabledInput.previewToggle = true;
         var githubElem = Polymer.dom(disabledInput.root).querySelector('marked-github-element');
         assert.isFalse(githubElem.hasAttribute('hidden'));
       });
@@ -140,9 +139,31 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       });
 
       test('Hides paper-textarea when preview is true', function() {
-        disabledInput._previewToggle = true;
+        disabledInput.previewToggle = true;
         var paperText = Polymer.dom(disabledInput.root).querySelector('paper-textarea');
         assert.isTrue(paperText.hasAttribute('hidden'));
+      });
+
+      test('Hides the edit icon when preview is true', function() {
+        disabledInput.previewToggle = true;
+        var editIcon = Polymer.dom(disabledInput.root).querySelector('#editIcon');
+        assert.isTrue(editIcon.hasAttribute('hidden'));
+      });
+
+      test('Hides the preview icon when preview is true', function() {
+        disabledInput.previewToggle = true;
+        var previewIcon = Polymer.dom(disabledInput.root).querySelector('#previewIcon');
+        assert.isTrue(previewIcon.hasAttribute('hidden'));
+      });
+
+      test('Hides the edit icon when preview is false', function() {
+        var editIcon = Polymer.dom(disabledInput.root).querySelector('#editIcon');
+        assert.isTrue(editIcon.hasAttribute('hidden'));
+      });
+
+      test('Hides the preview icon when preview is false', function() {
+        var previewIcon = Polymer.dom(disabledInput.root).querySelector('#previewIcon');
+        assert.isTrue(previewIcon.hasAttribute('hidden'));
       });
     });
   </script>
