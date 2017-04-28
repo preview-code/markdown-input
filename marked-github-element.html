@@ -85,16 +85,11 @@ Element that shows GitHub flavored markdown.
     <style>
       :host {
         display: block;
-        @apply(--commits);
+        @apply --commits;
         line-height: 1.4em;
       }
       img {
         max-width: 100%;
-      }
-      pre {
-        background-color: #f7f7f7;
-        padding: 16px;
-        overflow: auto;
       }
       a {
         text-decoration: none;
@@ -105,7 +100,7 @@ Element that shows GitHub flavored markdown.
       }
       .markdown-html, p {
         word-wrap: break-word;
-        @apply(--commits);
+        @apply --commits;
       }
       marked-element {
         width: 100%;

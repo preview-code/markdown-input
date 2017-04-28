@@ -24,8 +24,7 @@ after toggling the preview showing the rendered markdown in real-time.
     <style>
       :host {
         display: flex;
-        padding: 1em;
-        padding-left: 0.5em;
+        padding: 0.5em;
         border: solid 1px transparent;
       }
       :host([disabled]) {
@@ -46,7 +45,7 @@ after toggling the preview showing the rendered markdown in real-time.
       }
       paper-textarea {
         --paper-input-container: {
-          padding: 0 0 1em 0;
+          padding: 0 0 0.5em 0;
         };
         --paper-input-container-label: {
           color: var(--secondary-text-color, grey);
@@ -63,7 +62,6 @@ after toggling the preview showing the rendered markdown in real-time.
       }
       marked-github-element {
         margin-top: 16px;
-        min-height: 50px;
       }
     </style>
     <div class="edit-area">
